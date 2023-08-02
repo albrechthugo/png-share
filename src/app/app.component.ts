@@ -23,10 +23,11 @@ export class AppComponent {
             return;
           }
 
-          const reader = new FileReader();
-
-          reader.onloadend = () => {
-            const data = { url: reader.result as string };
+          blob.arrayBuffer().then((buffer) => {
+            const fileData = [new Uint8Array(buffer)];
+            const data = {
+              files: [new File(fileData, 'teste.png', { type: 'image/png' })],
+            };
 
             if (!this.document.defaultView?.navigator.canShare(data)) {
               console.error('share api not supported here!');
@@ -34,9 +35,7 @@ export class AppComponent {
             }
 
             this.document.defaultView?.navigator.share(data);
-          };
-
-          reader.readAsDataURL(blob);
+          });
         },
         'image/png',
         1.0
