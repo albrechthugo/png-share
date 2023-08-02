@@ -23,16 +23,20 @@ export class AppComponent {
             return;
           }
 
-          const file = new File([blob], 'users-test', { type: 'image/png' });
+          const reader = new FileReader();
 
-          const data = { files: [file] };
+          reader.onloadend = () => {
+            const data = { url: reader.result as string };
 
-          if (!this.document.defaultView?.navigator.canShare(data)) {
-            console.error('share api not supported here!');
-            return;
-          }
+            if (!this.document.defaultView?.navigator.canShare(data)) {
+              console.error('share api not supported here!');
+              return;
+            }
 
-          this.document.defaultView?.navigator.share(data);
+            this.document.defaultView?.navigator.share(data);
+          };
+
+          reader.readAsDataURL(blob);
         },
         'image/png',
         1.0
