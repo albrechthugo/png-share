@@ -23,19 +23,18 @@ export class AppComponent {
             return;
           }
 
-          blob.arrayBuffer().then((buffer) => {
-            const fileData = [new Uint8Array(buffer)];
-            const data = {
-              files: [new File(fileData, 'teste.png', { type: 'image/png' })],
-            };
-
-            if (!this.document.defaultView?.navigator.canShare(data)) {
-              console.error('share api not supported here!');
-              return;
-            }
-
-            this.document.defaultView?.navigator.share(data);
+          const file = new File([blob], 'users-test.png', {
+            type: 'image/png',
           });
+
+          const data = { files: [file] };
+
+          if (!window.navigator.canShare(data)) {
+            console.error('share api not supported here!');
+            return;
+          }
+
+          window.navigator.share(data);
         },
         'image/png',
         1.0
