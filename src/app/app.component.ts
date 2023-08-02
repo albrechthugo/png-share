@@ -23,7 +23,7 @@ export class AppComponent {
             return;
           }
 
-          const file = new File([blob], 'users-test.png', {
+          const file = new File([blob], 'users-test', {
             type: 'image/png',
           });
 
